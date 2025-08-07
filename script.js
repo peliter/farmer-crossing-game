@@ -98,19 +98,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 boatElement.appendChild(itemElement);
             }
         }
-        // 計算河流寬度並設定船的位置
-        const riverElement = document.getElementById('river');
-        const riverWidth = riverElement.offsetWidth;
-        const boatWidth = 100; // 船的寬度
+        // 檢查是否為手機版布局
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 414;
         
-        if (gameState.boat === 'left') {
-            // 左邊：距離左邊界 5%
-            const leftPosition = riverWidth * 0.05;
-            boatElement.style.transform = `translateX(${leftPosition}px)`;
+        if (isMobile) {
+            // 手機版：上下移動
+            const riverElement = document.getElementById('river');
+            const riverHeight = riverElement.offsetHeight;
+            const boatHeight = boatElement.offsetHeight || 60;
+            
+            if (gameState.boat === 'left') {
+                // 左岸對應上方位置
+                const topPosition = riverHeight * 0.1;
+                boatElement.style.top = `${topPosition}px`;
+                boatElement.style.left = '50%';
+                boatElement.style.transform = 'translateX(-50%)';
+            } else {
+                // 右岸對應下方位置
+                const bottomMargin = riverHeight * 0.1;
+                const bottomPosition = riverHeight - boatHeight - bottomMargin;
+                boatElement.style.top = `${bottomPosition}px`;
+                boatElement.style.left = '50%';
+                boatElement.style.transform = 'translateX(-50%)';
+            }
         } else {
-            // 右邊：距離右邊界 5%（船的右邊界貼近河流右邊界）
-            const rightPosition = riverWidth - boatWidth - (riverWidth * 0.05);
-            boatElement.style.transform = `translateX(${rightPosition}px)`;
+            // PC版：左右移動
+            const riverElement = document.getElementById('river');
+            const riverWidth = riverElement.offsetWidth;
+            const boatRect = boatElement.getBoundingClientRect();
+            const boatWidth = boatRect.width || 100;
+            
+            if (gameState.boat === 'left') {
+                // 左邊：距離左邊界的位置
+                const leftPosition = riverWidth * 0.05;
+                boatElement.style.transform = `translateX(${leftPosition}px)`;
+                boatElement.style.top = '';
+                boatElement.style.left = '';
+            } else {
+                // 右邊：距離右邊界的位置
+                const rightMargin = riverWidth * 0.05;
+                const rightPosition = riverWidth - boatWidth - rightMargin;
+                boatElement.style.transform = `translateX(${rightPosition}px)`;
+                boatElement.style.top = '';
+                boatElement.style.left = '';
+            }
+        }
+        
+        // 確保船上的物品在手機版上正確顯示
+        if (isMobile) {
+            const itemsOnBoat = boatElement.querySelectorAll('.item.on-boat');
+            itemsOnBoat.forEach((item, index) => {
+                // 在小螢幕上，物品應該更緊密排列
+                if (isSmallMobile) {
+                    item.style.margin = '1px';
+                } else {
+                    item.style.margin = '2px';
+                }
+            });
         }
     }
 
@@ -278,6 +323,21 @@ document.addEventListener('DOMContentLoaded', () => {
     solveBtn.addEventListener('click', showSolution);
 
     resetGame(); // 呼叫 resetGame 來設定初始畫面
+
+    // 窗口大小變化監聽器 - 重新計算船的位置
+    window.addEventListener('resize', () => {
+        // 延遲執行以確保CSS已經應用
+        setTimeout(() => {
+            updateUI();
+        }, 100);
+    });
+
+    // 頁面載入完成後再次更新UI，確保所有元素都已正確渲染
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            updateUI();
+        }, 200);
+    });
 
     // Konami Code 監聽器
     document.addEventListener('keydown', (e) => {
