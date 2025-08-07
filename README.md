@@ -113,14 +113,10 @@ farmer-crossing-game/
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 開啟 Pull Request
 
-## 📄 授權
-
-本專案採用 MIT 授權 - 詳見 [LICENSE](LICENSE) 檔案
-
 ## 👨‍💻 作者
 
 **Peliter Hsu**
-- GitHub: [@peliter](https://github.com/peliter)
+- GitHub: [@peliter](https://github.com/peliter) w/ AI
 
 ## 🙏 致謝
 
