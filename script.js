@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const solveBtn = document.getElementById('solve-btn');
     const messageArea = document.querySelector('#message-area p');
     const historyList = document.getElementById('history-list');
+    
+    // 失敗提示視窗元素
+    const failureModal = document.getElementById('failure-modal');
+    const failureMessage = document.getElementById('failure-message');
+    const restartBtn = document.getElementById('restart-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
 
     // --- 遊戲狀態管理 --- //
     const initialGameState = { farmer: 'left', tiger: 'left', sheep: 'left', snake: 'left', chicken: 'left', apple: 'left', boat: 'left' };
@@ -223,13 +229,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const unattendedBankStatus = unattendedBank === 'left' ? leftStatus : rightStatus;
 
         if (!unattendedBankStatus.isSafe) {
-            messageArea.textContent = `遊戲失敗：${unattendedBankStatus.reason}`;
             gameEnded = true;
             crossRiverBtn.disabled = true;
             failedAttempts++; // 失敗次數增加
+            
+            // 顯示失敗模態框
+            let failureText = unattendedBankStatus.reason;
             if (failedAttempts >= 3) {
-                messageArea.textContent += ' 提示：遇到困難了嗎？試試上上下下左右左右BA！';
+                failureText += '\n\n💡 提示：遇到困難了嗎？試試上上下下左右左右BA！';
             }
+            showFailureModal(failureText);
             return;
         }
 
@@ -302,6 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     }
 
+    function showFailureModal(message) {
+        failureMessage.textContent = message;
+        failureModal.style.display = 'flex';
+    }
+    
+    function hideFailureModal() {
+        failureModal.style.display = 'none';
+    }
+    
     function resetGame() {
         gameState = { ...initialGameState };
         gameEnded = false;
@@ -312,6 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         crossRiverBtn.disabled = false;
         historyList.innerHTML = '';
         solveBtn.style.display = 'none'; // 確保解答按鈕隱藏
+        hideFailureModal(); // 隱藏失敗模態框
 
         updateUI();
     }
@@ -321,6 +340,17 @@ document.addEventListener('DOMContentLoaded', () => {
     crossRiverBtn.addEventListener('click', onCrossRiver);
     resetBtn.addEventListener('click', resetGame);
     solveBtn.addEventListener('click', showSolution);
+    
+    // 失敗模態框事件監聽器
+    restartBtn.addEventListener('click', resetGame);
+    closeModalBtn.addEventListener('click', hideFailureModal);
+    
+    // 點擊模態框背景關閉
+    failureModal.addEventListener('click', (e) => {
+        if (e.target === failureModal) {
+            hideFailureModal();
+        }
+    });
 
     resetGame(); // 呼叫 resetGame 來設定初始畫面
 

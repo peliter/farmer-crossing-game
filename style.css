@@ -726,6 +726,141 @@ h1 {
     }
 }
 
+/* 失敗提示視窗樣式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 0;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+    overflow: hidden;
+}
+
+@keyframes modalSlideIn {
+    from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.modal-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.modal-body p {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.modal-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.modal-btn.primary {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.modal-btn.primary:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.modal-btn.secondary {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+}
+
+.modal-btn.secondary:hover {
+    background: linear-gradient(135deg, #5a6268, #495057);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+}
+
+.modal-btn:active {
+    transform: translateY(0);
+}
+
+/* 手機版模態框優化 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: 350px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal-body p {
+        font-size: 1.1rem;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
 /* 滾動條美化 */
 ::-webkit-scrollbar {
     width: 8px;

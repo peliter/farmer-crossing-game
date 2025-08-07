@@ -53,6 +53,22 @@
         </div>
     </div>
 
+    <!-- 失敗提示視窗 -->
+    <div id="failure-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🚫 遊戲失敗</h2>
+            </div>
+            <div class="modal-body">
+                <p id="failure-message">遊戲失敗訊息</p>
+                <div class="modal-buttons">
+                    <button id="restart-btn" class="modal-btn primary">🔄 重新開始</button>
+                    <button id="close-modal-btn" class="modal-btn secondary">❌ 關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 物品元素 (由 JS 控制) -->
     <div id="item-storage" style="display: none;">
         <img id="farmer" class="item" src="img/farmer.png" alt="農夫">
